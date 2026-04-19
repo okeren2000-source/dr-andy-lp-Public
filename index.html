@@ -62,7 +62,7 @@ img { max-width: 100%; display: block; }
   line-height: 1.4;
   text-align: center;
   font-weight: 400;
-  max-width: 480px;
+  max-width: 620px;
 }
 .hero-headline .yellow { color: #ffff00; }
 .hero-sub {
@@ -455,9 +455,10 @@ img { max-width: 100%; display: block; }
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 767px) {
-  .hero-headline { font-size: 26px; }
+  .hero-headline { font-size: 26px; max-width: 100%; }
   .hero-sub { font-size: 17px; }
   .hero-content-row { flex-direction: column; align-items: center; }
+  .form-card { max-width: 100%; width: 100%; }
   .benefits-grid { grid-template-columns: 1fr 1fr; gap: 20px 16px; }
   .cases-grid { grid-template-columns: 1fr 1fr; }
   .testimonials-grid { grid-template-columns: 1fr; }
