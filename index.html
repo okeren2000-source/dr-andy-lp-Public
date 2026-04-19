@@ -947,7 +947,14 @@ document.addEventListener('keydown', function(e) {
         const btnFinal = wrapper.querySelector('.andy-final-action');
         btnFinal.disabled = true; btnFinal.innerText = 'מאמת ושולח...';
         let recaptchaToken = "";
-        try { recaptchaToken = await grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'submit'}); } catch(e) {}
+        try {
+          recaptchaToken = await new Promise((resolve) => {
+            grecaptcha.ready(async () => {
+              try { resolve(await grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'submit'})); }
+              catch(e) { resolve(""); }
+            });
+          });
+        } catch(e) {}
         let userIP = "";
         try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); userIP = d.ip; } catch(e) {}
         const eventID = generateEventID();
