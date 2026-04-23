@@ -1,6 +1,7 @@
 const ALLOWED_ORIGINS = [
   'https://clinic.dr-andy.co.il',
   'https://lp.dr-andy.co.il',
+  'https://dr-andy-lp-public.vercel.app',
 ];
 
 const ZAPIER_URL = 'https://hooks.zapier.com/hooks/catch/1070512/ssbflj/';
