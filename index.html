@@ -937,7 +937,7 @@ document.addEventListener('keydown', function(e) {
   const bumpSubmitCount = () => sessionStorage.setItem('andy_sc', getSubmitCount() + 1);
 
   const initAllForms = () => {
-    const WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/1070512/ssbflj/';
+    const WEBHOOK_URL = '/api/submit';
     const RECAPTCHA_SITE_KEY = '6LcDWqssAAAAAI9yy9ST-jF20i7y0c1SWxlBc6ZP';
     const getParam = (n) => new URLSearchParams(window.location.search).get(n) || "";
     const generateEventID = () => 'andy_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
