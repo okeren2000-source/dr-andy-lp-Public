@@ -9,6 +9,7 @@ const RECAPTCHA_SCORE_THRESHOLD = 0.5;
 
 async function verifyRecaptcha(token, ip) {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
+  console.log('[recaptcha] secret set:', !!secret, '| token present:', !!token);
   if (!secret) return true; // skip if not configured
 
   if (!token) return false;
@@ -22,8 +23,12 @@ async function verifyRecaptcha(token, ip) {
     body: params,
   });
 
-  if (!verifyRes.ok) return false;
+  if (!verifyRes.ok) {
+    console.error('[recaptcha] siteverify HTTP error:', verifyRes.status);
+    return false;
+  }
   const data = await verifyRes.json();
+  console.log('[recaptcha] result:', JSON.stringify(data));
   return data.success === true && data.score >= RECAPTCHA_SCORE_THRESHOLD;
 }
 
@@ -50,6 +55,7 @@ export default async function handler(req, res) {
 
   // Body may arrive as a raw string (text/plain) due to no-cors fetch mode
   let body = req.body;
+  console.log('[submit] body type:', typeof body, '| content-type:', req.headers['content-type']);
   if (typeof body === 'string') {
     try { body = JSON.parse(body); } catch { body = {}; }
   }
