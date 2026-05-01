@@ -25,6 +25,7 @@ async function verifyRecaptcha(token, ip) {
 
   if (!verifyRes.ok) return false;
   const data = await verifyRes.json();
+  console.log('[recaptcha]', JSON.stringify(data));
   return data.success === true && data.score >= RECAPTCHA_SCORE_THRESHOLD;
 }
 
@@ -72,7 +73,7 @@ export default async function handler(req, res) {
   const clientIp = req.headers['x-forwarded-for']?.split(',')[0].trim() || '';
   const isHuman = await verifyRecaptcha(recaptcha_token, clientIp);
   if (!isHuman) {
-    console.log('[submit] blocked: recaptcha failed, token present:', !!recaptcha_token);
+    console.log('[submit] recaptcha failed, token present:', !!recaptcha_token);
     return res.status(403).json({ ok: false, error: 'reCAPTCHA failed' });
   }
   console.log('[submit] passed all checks, forwarding to Zapier');
