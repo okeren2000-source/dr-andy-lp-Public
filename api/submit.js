@@ -46,6 +46,7 @@ export default async function handler(req, res) {
   }
 
   if (!ALLOWED_ORIGINS.includes(origin)) {
+    console.log('[submit] blocked: origin', origin);
     return res.status(403).json({ ok: false, error: 'Forbidden' });
   }
 
@@ -59,18 +60,22 @@ export default async function handler(req, res) {
   const { recaptcha_token, hp_field, ...zapierPayload } = body;
 
   if (hp_field) {
+    console.log('[submit] blocked: honeypot filled');
     return res.status(403).json({ ok: false, error: 'Forbidden' });
   }
 
   if (zapierPayload.full_name && /\d/.test(zapierPayload.full_name)) {
+    console.log('[submit] blocked: digits in name', zapierPayload.full_name);
     return res.status(422).json({ ok: false, error: 'Invalid name' });
   }
 
   const clientIp = req.headers['x-forwarded-for']?.split(',')[0].trim() || '';
   const isHuman = await verifyRecaptcha(recaptcha_token, clientIp);
   if (!isHuman) {
+    console.log('[submit] blocked: recaptcha failed, token present:', !!recaptcha_token);
     return res.status(403).json({ ok: false, error: 'reCAPTCHA failed' });
   }
+  console.log('[submit] passed all checks, forwarding to Zapier');
 
   const zapierRes = await fetch(ZAPIER_URL, {
     method: 'POST',
