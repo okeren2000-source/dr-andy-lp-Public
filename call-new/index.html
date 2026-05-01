@@ -976,7 +976,7 @@ document.addEventListener('keydown', function(e) {
         const name = nameInp.value.trim();
         const phone = phoneInp.value.trim();
         let err = false;
-        if (name.split(/\s+/).filter(w => w.length >= 2).length < 2) { wrapper.querySelector('.err-name').style.display = 'block'; err = true; }
+        if (/\d/.test(name) || name.split(/\s+/).filter(w => w.length >= 2).length < 2) { wrapper.querySelector('.err-name').style.display = 'block'; err = true; }
         if (!phone.startsWith('0') || phone.length < 10) { wrapper.querySelector('.err-phone').style.display = 'block'; err = true; }
         if (!err) { wrapper.querySelector('.andy-step-1').style.display = 'none'; wrapper.querySelector('.andy-step-2').style.display = 'block'; }
       }, true);
@@ -1009,7 +1009,8 @@ document.addEventListener('keydown', function(e) {
           brand: "Dr Andy", event_id: eventID, user_agent: navigator.userAgent, user_ip: userIP,
           fbclid: currentFbclid, fbc: currentFbclid ? `fb.1.${timestamp}.${currentFbclid}` : "",
           utm_campaign: campField.value, utm_source: srcField.value, utm_medium: medField.value,
-          gclid: gclidField.value || getParam('gclid'), page_url: window.location.href, recaptcha_token: recaptchaToken
+          gclid: gclidField.value || getParam('gclid'), page_url: window.location.href, recaptcha_token: recaptchaToken,
+          hp_field: honey.value
         };
         fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) }).then(() => {
           bumpSubmitCount();

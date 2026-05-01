@@ -56,7 +56,15 @@ export default async function handler(req, res) {
   }
   body = body || {};
 
-  const { recaptcha_token, ...zapierPayload } = body;
+  const { recaptcha_token, hp_field, ...zapierPayload } = body;
+
+  if (hp_field) {
+    return res.status(403).json({ ok: false, error: 'Forbidden' });
+  }
+
+  if (zapierPayload.full_name && /\d/.test(zapierPayload.full_name)) {
+    return res.status(422).json({ ok: false, error: 'Invalid name' });
+  }
 
   const clientIp = req.headers['x-forwarded-for']?.split(',')[0].trim() || '';
   const isHuman = await verifyRecaptcha(recaptcha_token, clientIp);
