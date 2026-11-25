@@ -1021,7 +1021,7 @@ document.addEventListener('keydown', function(e) {
             gtag('set', 'user_data', {'phone_number': '+' + p});
             gtag('event', 'conversion', {'send_to': 'AW-949603285/dgZDCLCrzVwQ1ZfnxAM'});
           }
-          if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: formData.interest}, {eventID: eventID});
+          if (typeof fbq === 'function') fbq('trackCustom', 'Track_Andy', {content_name: formData.interest}, {eventID: eventID});
         });
       };
     });
